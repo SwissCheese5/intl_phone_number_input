@@ -12,7 +12,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(appBar: AppBar(title: Text('Demo')), body: MyHomePage()),
+      home: Directionality(
+          textDirection: TextDirection.ltr,
+          child: Scaffold(
+              appBar: AppBar(title: Text('Demo')), body: MyHomePage())),
     );
   }
 }
