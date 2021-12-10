@@ -18,23 +18,25 @@ class SelectorButton extends StatelessWidget {
   final String? locale;
   final bool isEnabled;
   final bool isScrollControlled;
+  final EdgeInsets? buttonPadding;
 
   final ValueChanged<Country?> onCountryChanged;
 
-  const SelectorButton({
-    Key? key,
-    required this.countries,
-    required this.country,
-    required this.selectorConfig,
-    required this.selectorTextStyle,
-    required this.searchBoxDecoration,
-    required this.autoFocusSearchField,
-    required this.locale,
-    required this.onCountryChanged,
-    required this.isEnabled,
-    required this.isScrollControlled,
-    required this.buttonStyle,
-  }) : super(key: key);
+  const SelectorButton(
+      {Key? key,
+      required this.countries,
+      required this.country,
+      required this.selectorConfig,
+      required this.selectorTextStyle,
+      required this.searchBoxDecoration,
+      required this.autoFocusSearchField,
+      required this.locale,
+      required this.onCountryChanged,
+      required this.isEnabled,
+      required this.isScrollControlled,
+      required this.buttonStyle,
+      required this.buttonPadding})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +87,7 @@ class SelectorButton extends StatelessWidget {
                   }
                 : null,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: buttonPadding ?? const EdgeInsets.all(16.0),
               child: Item(
                 country: country,
                 showFlag: selectorConfig.showFlags,
