@@ -134,7 +134,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
 }
 
 class _InputWidgetState extends State<InternationalPhoneNumberInput> {
-  TextEditingController? controller;
+  late final TextEditingController controller;
   double selectorButtonBottomPadding = 0;
 
   Country? country;
@@ -146,7 +146,17 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
     super.initState();
     loadCountries();
     controller = widget.textFieldController ?? TextEditingController();
+    controller.addListener(onChanged);
     initialiseWidget();
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(onChanged);
+    if (widget.textFieldController == null) {
+      controller.dispose();
+    }
+    super.dispose();
   }
 
   @override
@@ -186,7 +196,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
         String phoneNumber =
             await PhoneNumber.getParsableNumber(widget.initialValue!);
 
-        controller!.text = widget.formatInput
+        controller.text = widget.formatInput
             ? phoneNumber
             : phoneNumber.replaceAll(RegExp(r'[^\d+]'), '');
 
@@ -228,7 +238,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
   void phoneNumberControllerListener() {
     if (this.mounted) {
       String parsedPhoneNumberString =
-          controller!.text.replaceAll(RegExp(r'[^\d+]'), '');
+          controller.text.replaceAll(RegExp(r'[^\d+]'), '');
 
       getParsedPhoneNumber(parsedPhoneNumberString, this.country?.alpha2Code)
           .then((phoneNumber) {
@@ -314,7 +324,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
   }
 
   /// Validate the phone number when a change occurs
-  void onChanged(String value) {
+  void onChanged() {
     phoneNumberControllerListener();
   }
 
@@ -351,7 +361,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
   void _phoneNumberSaved() {
     if (this.mounted) {
       String parsedPhoneNumberString =
-          controller!.text.replaceAll(RegExp(r'[^\d+]'), '');
+          controller.text.replaceAll(RegExp(r'[^\d+]'), '');
 
       String phoneNumber =
           '${this.country?.dialCode ?? ''}' + parsedPhoneNumberString;
@@ -462,12 +472,12 @@ class _InputWidgetView
                         isoCode: countryCode,
                         dialCode: dialCode,
                         onInputFormatted: (TextEditingValue value) {
-                          state.controller!.value = value;
+                          state.controller.value = value;
                         },
                       )
                     : FilteringTextInputFormatter.digitsOnly,
               ],
-              onChanged: state.onChanged,
+              onChanged: (string) => state.onChanged,
             ),
           )
         ],

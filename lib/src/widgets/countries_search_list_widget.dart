@@ -60,7 +60,6 @@ class _CountrySearchListWidgetState extends State<CountrySearchListWidget> {
     return Material(
       color: Colors.transparent,
       child: SafeArea(
-        bottom: false,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
